@@ -13,23 +13,33 @@ public class PortScannerRemote {
 		InputStreamReader in = new InputStreamReader(System.in);
 		BufferedReader reader = new BufferedReader(in);
 
-		String targetIp = "";
+		String targetIP = "";
 		Port startPort = null;
 		Port endPort = null;
 
 		System.out.print("Enter IP address of target: ");
 
 		try {
-			targetIp = reader.readLine();
+			targetIP = reader.readLine();
+			
+			while(!validIP(targetIP)) //checks if IP is valid
+			{
+				
+				System.out.print("Enter IP address of target: ");
+				targetIP = reader.readLine();
+			}
+			
+			
 		} catch (IOException e) {
 			System.out.println("Unable to read the entered IP address "+ e.toString());
 		}
+
 
 		boolean validPort = false;
 
 		while(!validPort){
 			
-			System.out.print("Please the beginning port: ");
+			System.out.print("Please enter the beginning port: ");
 			try {
 				String port = reader.readLine();
 				int portInt = Integer.parseInt(port);
@@ -91,7 +101,7 @@ public class PortScannerRemote {
 		while(port <= endPort.getPort()){
 			try {
 
-				Socket portSocket = new Socket(targetIp,port); //attempt to open socket at entered IP and current port value
+				Socket portSocket = new Socket(targetIP,port); //attempt to open socket at entered IP and current port value
 				System.out.println(String.format("Port %d is open and listening!", port));
 				portSocket.close();
 
@@ -110,7 +120,7 @@ public class PortScannerRemote {
 
 	public static boolean isValid(int port)
 	{
-		if(port >= 0 && port <= 65536)
+		if(port >= 0 && port <= 65536) //checks if port is in valid range
 		{
 			return true;
 		}
@@ -120,7 +130,45 @@ public class PortScannerRemote {
 
 	public static void invalidPort()
 	{
-		System.out.println("Port entered is invalid, value must range from 0 - 65536");
+		System.out.println("Port entered is invalid, value must range from 0 - 65536"); // simple error message
+	}
+	
+	public static boolean validIP(String IP)
+	{
+		
+		Process process;
+		BufferedReader inputStream;
+		try {
+			process = Runtime.getRuntime().exec("ping "+IP); //pings the entered IP address
+			inputStream = new BufferedReader(new InputStreamReader(process.getInputStream())); //reads input from ping
+			String inMessage = "";
+			int replyNumber = 0;
+			
+			while((inMessage = inputStream.readLine()) != null )
+			{
+				replyNumber ++; //counts the number of replies from the server
+				
+				if (inMessage.contains("transmit failed")) //check to see if ping failed(should be improved!) 
+				{
+					System.out.println("IP address is unreachable");
+					return false;	
+				}
+			}
+			
+			if(replyNumber < 2) //a second check, this is used for non-ip addresses such as letters and words
+			{
+				System.out.println("IP address is unreachable");
+				return false;
+			}
+			
+			System.out.println("IP address is reachable!");
+			return (replyNumber > 1) ? true:false;
+		} catch (IOException e) {
+			
+			System.out.println("Unable to read the entered IP address "+ e.toString());
+		}
+		
+		return false;
 	}
 
 }

@@ -1,10 +1,8 @@
-# Project Title
-
-Port Scanner
+# Port Scanner
 
 ## Introduction
 
-A small project that scans a range of ports from a given IP address. The current implementation is basic, further functionality will be added in the future.
+A small Java project that scans a range of ports from a given IP address. The current implementation is basic, further functionality will be added in the future.
 
 
 ## To Do
