@@ -27,8 +27,8 @@ public class PortScannerRemote {
 
 		boolean validPort = false;
 
-		while(!validPort)
-		{
+		while(!validPort){
+			
 			System.out.print("Please the beginning port: ");
 			try {
 				String port = reader.readLine();
@@ -55,8 +55,8 @@ public class PortScannerRemote {
 
 		validPort = false;
 
-		while(!validPort)
-		{
+		while(!validPort){
+			
 			System.out.print("Please enter the ending port: ");
 			try {
 				String port = reader.readLine();
@@ -89,24 +89,20 @@ public class PortScannerRemote {
 
 		int port = startPort.getPort(); //get the value of the first port to begin scanning
 
-		while(port <= endPort.getPort()) 
-		{
+		while(port <= endPort.getPort()){
 			try {
 
 				Socket portSocket = new Socket(targetIp,port); //attempt to open socket at entered IP and current port value
 				System.out.println(String.format("Port %d is open and listening!", port));
 				portSocket.close();
 
-			} catch(UnknownHostException e1) //invalid host
-			{
+			} catch(UnknownHostException e1){ //invalid host
+			
 				System.out.println("Unknown host exception " + e1.toString());
-			}
-			catch(IOException e2) //port is not open
-			{
+			} catch(IOException e2) { //port is not open
+			
 				System.out.println(String.format("Port %d is not open!", port)); // print what port is opened
-			}
-			catch(Exception e) 
-			{
+			} catch(Exception e) {
 				System.out.println(e.toString()); 
 			}
 			port++;  //increment port number and loop again
