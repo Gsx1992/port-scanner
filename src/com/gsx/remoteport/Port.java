@@ -12,9 +12,4 @@ public class Port {
 	public int getPort() {
 		return port;
 	}
-	
-	
-	
-	
-
 }

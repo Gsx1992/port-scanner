@@ -50,7 +50,6 @@ public class PortScannerRemote {
 			} catch (NumberFormatException e2) {
 				System.out.println("Please enter a valid number!");
 			}
-
 		}
 
 		validPort = false;
@@ -107,9 +106,6 @@ public class PortScannerRemote {
 			}
 			port++;  //increment port number and loop again
 		}
-
-
-
 	}
 
 	public static boolean isValid(int port)
